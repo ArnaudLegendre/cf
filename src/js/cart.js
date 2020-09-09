@@ -63,13 +63,13 @@ function refreshCart() {
 
                 tbody.lastElementChild.querySelector('.refLabel > .value').innerHTML = e.ref
                 tbody.lastElementChild.querySelector('.productLabel > .value').innerHTML = `${e.name}. ${optsName}`
-                tbody.lastElementChild.querySelector('.priceLabel > .value').innerHTML = e.price
+                tbody.lastElementChild.querySelector('.priceLabel > .value').innerHTML = Number(Math.round(e.price + 'e2') + 'e-2').toFixed(2)
                 tbody.lastElementChild.querySelector('.qtyLabel > .value').innerHTML = e.qty
-                tbody.lastElementChild.querySelector('.totalLabel > .value').innerHTML = (e.price * e.qty).toFixed(2)
+                tbody.lastElementChild.querySelector('.totalLabel > .value').innerHTML = Number(Math.round((e.price * e.qty) + 'e2') + 'e-2').toFixed(2)
 
                 if (e.options.length > 0) {
 
-                    let optionDiv = document.createElement('div')
+                    let optionDiv = document.createElement('small')
                     optionDiv.innerHTML = e.options
                     optionDiv.classList.add('optionsList')
                     tbody.lastElementChild.querySelector('.refLabel > .value').after(optionDiv)
@@ -80,7 +80,7 @@ function refreshCart() {
 
             })
 
-            document.querySelector('.cartPrice').innerHTML = totalPrice.toFixed(2)
+            document.querySelector('.cartPrice').innerHTML = Number(Math.round(totalPrice + 'e2') + 'e-2').toFixed(2)
 
             document.getElementById('buttonCart').querySelector('svg').setAttribute('data-modaltarget', 'cart')
 
@@ -148,10 +148,9 @@ async function addCartFromProductPage(e) {
         refreshCart()
 
     }
-
 }
 
-async function addCart(ref, qty) {
+async function addCart(ref, qty, opt = '') {
     let productAdd = {}
     let data = []
 
@@ -168,7 +167,7 @@ async function addCart(ref, qty) {
         "qty": qty,
         "name": product.name,
         "price": product.price,
-        "options": ''
+        "options": opt
     }
 
     if (!cartLocal) {
